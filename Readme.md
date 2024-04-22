@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Артём Плаксин](https://up.htmlacademy.ru/javascript-individual/1/user/2516011).
-* Наставник: `Неизвестно`.
+- Студент: [Артём Плаксин](https://up.htmlacademy.ru/javascript-individual/1/user/2516011).
+- Наставник: [Юрий Белобородов](https://htmlacademy.ru/profile/id514591).
 
 ---
 
