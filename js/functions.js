@@ -29,6 +29,22 @@ function extractDigits(input) {
   }
 }
 
+function PadString(str, minLength, padChars) {
+  const padLength = minLength - str.length;
+  const repeatCount = Math.ceil(padLength / padChars.length);
+  let paddedChars = '';
+
+  if (padLength <= 0) {
+    return str;
+  }
+
+  for (let i = 0; i < repeatCount; i++) {
+    paddedChars = padChars.substring(0, padLength - (i * padChars.length)) + paddedChars;
+  }
+
+  return paddedChars + str;
+}
+
 isPalindrome('топот');
 isPalindrome('ДовОд');
 isPalindrome('Кекс');
@@ -43,6 +59,11 @@ extractDigits(2023); // 2023
 extractDigits(-1); // 1
 extractDigits(1.5); // 15
 
+PadString('1', 2, '0'); // '01'
+PadString('1', 4, '0'); // '0001'
+PadString('q', 4, 'werty'); // 'werq'
+PadString('q', 4, 'we'); // 'wweq'
+PadString('qwerty', 4, '0'); // 'qwerty'
 
 // // Тесты: Функция 1
 // // Строка является палиндромом
@@ -63,3 +84,10 @@ extractDigits(1.5); // 15
 // console.log(extractDigits(2023)); // 2023
 // console.log(extractDigits(-1)); // 1
 // console.log(extractDigits(1.5)); // 15
+
+// // Тесты: Функция 3
+// console.log(PadString('1', 2, '0')); // '01'
+// console.log(PadString('1', 4, '0')); // '0001'
+// console.log(PadString('q', 4, 'werty')); // 'werq'
+// console.log(PadString('q', 4, 'we')); // 'wweq'
+// console.log(PadString('qwerty', 4, '0')); // 'qwerty'
