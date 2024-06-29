@@ -18,7 +18,7 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-function openBigPicture ({ url, description, likes, comments }) {
+const updateBigPictureContent = ({ url, description, likes, comments }) => {
   bigPictureImg.src = url;
   bigPictureImg.alt = description;
   likesCount.textContent = likes;
@@ -26,6 +26,10 @@ function openBigPicture ({ url, description, likes, comments }) {
   socialCaption.textContent = description;
 
   renderCommentsList(socialComments, comments);
+};
+
+function openBigPicture (cardData) {
+  updateBigPictureContent(cardData);
 
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
