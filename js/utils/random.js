@@ -12,7 +12,6 @@ const createRandomIdFromRangeGenerator = (min, max) => {
   return function () {
     let currentValue = getRandomInt(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      window.console.error(`Перебраны все числа из диапазона от ${min} до ${max}`);
       return null;
     }
     while (previousValues.includes(currentValue)) {

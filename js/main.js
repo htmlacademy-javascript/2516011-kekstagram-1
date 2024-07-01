@@ -1,4 +1,4 @@
 import { generatePhotos } from './data/photos.js';
-import { renderThumbnails } from './services/photoThumbnails.js';
+import { renderGallery } from './services/gallery.js';
 
-renderThumbnails(generatePhotos());
+renderGallery(generatePhotos());
