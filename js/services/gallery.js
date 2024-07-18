@@ -13,6 +13,8 @@ const renderGallery = (photos) => {
       return;
     }
 
+    evt.preventDefault();
+
     const id = parseInt(photoElement.dataset.id, 10);
     const cardData = photos.find((photo) => photo.id === id);
     if (cardData) {
