@@ -11,24 +11,37 @@ const imgPreview = document.querySelector('.img-upload__preview img');
 const hashTagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 
-const OpenEditor = (evt) => {
+const onDocumentKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeEditor();
+  }
+};
+
+function openEditor (evt) {
   imgPreview.src = evt.target.result;
   imgOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
-};
+  document.addEventListener('keydown', onDocumentKeydown);
+}
 
-const CloseEditor = () => {
+function closeEditor () {
   form.reset();
   pristine.reset();
   imgOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   fileInput.value = '';
+  document.removeEventListener('keydown', onDocumentKeydown);
+}
+
+const onLoadReader = (evt) => {
+  openEditor(evt);
 };
 
 const onFileInputChange = (evt) => {
   const file = evt.target.files[0];
   if (file) {
-    reader.addEventListener('load', OpenEditor);
+    reader.addEventListener('load', onLoadReader);
     reader.readAsDataURL(file);
   }
 };
@@ -37,6 +50,10 @@ const onCancelButtonLock = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
+};
+
+const onCancelButtonClick = () => {
+  closeEditor();
 };
 
 const onSubmit = (evt) => {
@@ -50,12 +67,7 @@ const onSubmit = (evt) => {
 };
 
 fileInput.addEventListener('change', onFileInputChange);
-cancelButton.addEventListener('click', CloseEditor);
-document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    CloseEditor();
-  }
-});
+cancelButton.addEventListener('click', onCancelButtonClick);
 hashTagsInput.addEventListener('keydown', onCancelButtonLock);
 commentInput.addEventListener('keydown', onCancelButtonLock);
 form.addEventListener('submit', onSubmit);
