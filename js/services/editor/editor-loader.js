@@ -1,5 +1,7 @@
-import { isEscapeKey } from '../utils/keyboard-keys.js';
+import { isEscapeKey } from '../../utils/keyboard-keys.js';
 import { form, pristine } from './editor-form-validation.js';
+import { resetScale } from './editor-scale-control.js';
+import { resetEffects } from './editor-img-effects.js';
 
 const reader = new FileReader();
 
@@ -28,6 +30,8 @@ function openEditor (evt) {
 function closeEditor () {
   form.reset();
   pristine.reset();
+  resetScale();
+  resetEffects();
   imgOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   fileInput.value = '';
