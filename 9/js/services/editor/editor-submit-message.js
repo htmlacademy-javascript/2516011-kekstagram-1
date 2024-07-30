@@ -31,7 +31,7 @@ const showMessage = (templateId) => {
   const boundClickOutsideHandler = (event) => handleClickOutside(event, messageElement);
   const boundEscPressHandler = (event) => handleEscPress(event, messageElement);
 
-  button.addEventListener('click', removeMessage(messageElement, boundClickOutsideHandler, boundEscPressHandler));
+  button.addEventListener('click', () => removeMessage(messageElement, boundClickOutsideHandler, boundEscPressHandler));
   document.addEventListener('click', boundClickOutsideHandler);
   document.addEventListener('keydown', boundEscPressHandler);
 };

@@ -4,8 +4,8 @@ import { showError } from './utils/error-messages.js';
 import { setOnSubmit } from './services/editor/editor-loader.js';
 
 getData()
-  .then((wizards) => {
-    renderGallery(wizards);
+  .then((photos) => {
+    renderGallery(photos);
   })
   .catch(
     (err) => {
