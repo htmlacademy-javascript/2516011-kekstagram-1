@@ -2,6 +2,8 @@ import { isEscapeKey } from '../../utils/keyboard-keys.js';
 import { form, pristine } from './editor-form-validation.js';
 import { resetScale } from './editor-scale-control.js';
 import { resetEffects } from './editor-img-effects.js';
+import { sendData } from '../../data/api.js';
+import { showSuccessMessage, showErrorMessage } from './editor-submit-message.js';
 
 const reader = new FileReader();
 
@@ -12,6 +14,12 @@ const fileInput = document.getElementById('upload-file');
 const imgPreview = document.querySelector('.img-upload__preview img');
 const hashTagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
+
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...'
+};
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -60,18 +68,42 @@ const onCancelButtonClick = () => {
   closeEditor();
 };
 
-const onSubmit = (evt) => {
-  evt.preventDefault();
-  const valid = pristine.validate();
-  if (valid) {
-    window.console.log('Форма валидна, можно отправлять данные.');
-  } else {
-    window.console.log('Форма не валидна, проверьте поля.');
-  }
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+
+const setOnSubmit = () => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+
+      sendData(new FormData(form))
+        .then(() => {
+          closeEditor();
+          showSuccessMessage();
+        })
+        .catch(() => {
+          showErrorMessage();
+        })
+        .finally(() => {
+          unblockSubmitButton();
+        });
+    }
+  });
 };
 
 fileInput.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 hashTagsInput.addEventListener('keydown', onCancelButtonLock);
 commentInput.addEventListener('keydown', onCancelButtonLock);
-form.addEventListener('submit', onSubmit);
+
+export { setOnSubmit };
