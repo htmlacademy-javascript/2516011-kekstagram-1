@@ -1,4 +1,4 @@
-import { sortRandomly, sortByComments } from '../utils/random.js';
+import { sortRandomly, sortByComments } from '../utils/sort.js';
 
 const PICTURES_RENDER_COUNT = 10;
 const PhotoFilterSettings = {
