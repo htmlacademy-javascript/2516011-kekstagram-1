@@ -2,9 +2,13 @@ import { renderThumbnails } from './photo-thumbnails.js';
 import { openBigPicture } from './big-picture.js';
 
 const renderGallery = (photos) => {
-  renderThumbnails(photos);
-
   const photosContainer = document.querySelector('.pictures');
+
+  photosContainer.querySelectorAll('.picture').forEach((photoElement) => {
+    photoElement.remove();
+  });
+
+  renderThumbnails(photos);
 
   const onCardsClick = (evt) => {
     const photoElement = evt.target.closest('.picture');
