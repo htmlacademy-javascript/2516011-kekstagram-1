@@ -5,8 +5,6 @@ import { resetEffects } from './editor-img-effects.js';
 import { sendData } from '../../data/api.js';
 import { showSuccessMessage, showErrorMessage } from './editor-submit-message.js';
 
-const reader = new FileReader();
-
 const body = document.body;
 const imgOverlay = document.querySelector('.img-upload__overlay');
 const cancelButton = document.getElementById('upload-cancel');
@@ -28,14 +26,14 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-function openEditor (evt) {
-  imgPreview.src = evt.target.result;
+function openEditor(fileURL) {
+  imgPreview.src = fileURL;
   imgOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 }
 
-function closeEditor () {
+function closeEditor() {
   form.reset();
   pristine.reset();
   resetScale();
@@ -43,20 +41,11 @@ function closeEditor () {
   imgOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   fileInput.value = '';
+  if (imgPreview.src.startsWith('blob:')) {
+    URL.revokeObjectURL(imgPreview.src);
+  }
   document.removeEventListener('keydown', onDocumentKeydown);
 }
-
-const onLoadReader = (evt) => {
-  openEditor(evt);
-};
-
-const onFileInputChange = (evt) => {
-  const file = evt.target.files[0];
-  if (file) {
-    reader.addEventListener('load', onLoadReader);
-    reader.readAsDataURL(file);
-  }
-};
 
 const onCancelButtonLock = (evt) => {
   if (isEscapeKey(evt)) {
@@ -101,9 +90,8 @@ const setOnSubmit = () => {
   });
 };
 
-fileInput.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 hashTagsInput.addEventListener('keydown', onCancelButtonLock);
 commentInput.addEventListener('keydown', onCancelButtonLock);
 
-export { setOnSubmit };
+export { setOnSubmit, openEditor };
