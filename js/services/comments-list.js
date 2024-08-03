@@ -1,7 +1,8 @@
-const renderCommentsList = (socialComments, comments) => {
+const renderCommentsList = (socialComments, comments, startIndex, count) => {
   const fragment = document.createDocumentFragment();
 
-  comments.forEach(({ avatar, message, name }) => {
+  const commentsToRender = comments.slice(startIndex, startIndex + count);
+  commentsToRender.forEach(({ avatar, message, name }) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
 
