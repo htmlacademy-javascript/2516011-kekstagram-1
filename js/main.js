@@ -4,7 +4,7 @@ import { setupFilters } from './services/filters.js';
 import { showError } from './utils/error-messages.js';
 import { setOnSubmit, openEditor } from './services/editor/editor-loader.js';
 import { debounce } from './utils/optimization.js';
-import { addImageLoadListener } from './services/editor/image-loader.js';
+import { addImageLoadListener } from './services/editor/editor-upload-image.js';
 
 const fileInput = document.getElementById('upload-file');
 
