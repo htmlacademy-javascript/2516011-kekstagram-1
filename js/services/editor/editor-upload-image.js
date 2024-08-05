@@ -13,8 +13,8 @@ const validateFileType = (file) => new Promise((resolve, reject) => {
   }
 });
 
-const onFileInputChange = (event, openEditor) => {
-  const fileInput = event.target;
+const onFileInputChange = (evt, openEditor) => {
+  const fileInput = evt.target;
   const file = fileInput.files[0];
 
   if (file) {
@@ -30,7 +30,7 @@ const onFileInputChange = (event, openEditor) => {
 };
 
 const addImageLoadListener = (fileInput, openEditor) => {
-  fileInput.addEventListener('change', (event) => onFileInputChange(event, openEditor));
+  fileInput.addEventListener('change', (evt) => onFileInputChange(evt, openEditor));
 };
 
 export { addImageLoadListener };

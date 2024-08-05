@@ -64,8 +64,8 @@ const onEffectLevelUpdate = (values, handle) => {
   applyEffect(currentEffect, value);
 };
 
-const onEffectChange = (event) => {
-  const effect = event.target.value;
+const onEffectChange = (evt) => {
+  const effect = evt.target.value;
   imgUploadPreview.className = `effects__preview--${effect}`;
   currentEffect = effect;
   updateSlider(effect);
