@@ -78,10 +78,10 @@ const setOnSubmit = () => {
       sendData(new FormData(form))
         .then(() => {
           closeEditor();
-          showSuccessMessage();
+          showSuccessMessage(onDocumentKeydown);
         })
         .catch(() => {
-          showErrorMessage();
+          showErrorMessage(onDocumentKeydown);
         })
         .finally(() => {
           unblockSubmitButton();
