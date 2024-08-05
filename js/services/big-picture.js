@@ -23,7 +23,7 @@ const onDocumentKeydown = (evt) => {
 };
 
 const updateCommentCount = () => {
-  commentCountBlock.innerHTML = `${Math.min(currentCommentIndex, comments.length)} из ${comments.length} комментариев`;
+  commentCountBlock.textContent = `${Math.min(currentCommentIndex, comments.length)} из ${comments.length} комментариев`;
 };
 
 const renderComments = () => {
