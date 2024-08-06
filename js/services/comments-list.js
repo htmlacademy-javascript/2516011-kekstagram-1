@@ -1,28 +1,28 @@
+const COMMENT_IMAGE_SIZE = 35;
+
 const renderCommentsList = (socialComments, comments, startIndex, count) => {
   const fragment = document.createDocumentFragment();
 
-  const commentsToRender = comments.slice(startIndex, startIndex + count);
-  commentsToRender.forEach(({ avatar, message, name }) => {
-    const commentElement = document.createElement('li');
-    commentElement.classList.add('social__comment');
+  comments.slice(startIndex, startIndex + count).forEach(({ avatar, message, name }) => {
+    const comment = document.createElement('li');
+    comment.classList.add('social__comment');
 
-    const imgElement = document.createElement('img');
-    imgElement.classList.add('social__picture');
-    imgElement.src = avatar;
-    imgElement.alt = name;
-    imgElement.width = 35;
-    imgElement.height = 35;
+    const img = document.createElement('img');
+    img.classList.add('social__picture');
+    img.src = avatar;
+    img.alt = name;
+    img.width = COMMENT_IMAGE_SIZE;
+    img.height = COMMENT_IMAGE_SIZE;
 
-    const textElement = document.createElement('p');
-    textElement.classList.add('social__text');
-    textElement.textContent = message;
+    const text = document.createElement('p');
+    text.classList.add('social__text');
+    text.textContent = message;
 
-    commentElement.appendChild(imgElement);
-    commentElement.appendChild(textElement);
-    fragment.appendChild(commentElement);
+    comment.append(img, text);
+    fragment.append(comment);
   });
 
-  socialComments.appendChild(fragment);
+  socialComments.append(fragment);
 };
 
 const clearCommentsList = (socialComments) => {

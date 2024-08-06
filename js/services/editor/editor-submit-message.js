@@ -1,47 +1,55 @@
 import { isEscapeKey } from '../../utils/keyboard-keys.js';
 
-const handleClickOutside = (event, messageElement) => {
-  if (!messageElement.contains(event.target.closest('.success__inner'))) {
-    removeMessage(messageElement);
-  }
-};
-
-const handleEscPress = (event, messageElement) => {
-  if (isEscapeKey(event)) {
-    removeMessage(messageElement);
-  }
-};
-
-function removeMessage(messageElement, boundClickOutsideHandler, boundEscPressHandler) {
-  if (messageElement && messageElement.parentNode) {
-    messageElement.parentNode.removeChild(messageElement);
-  }
-  document.removeEventListener('click', boundClickOutsideHandler);
-  document.removeEventListener('keydown', boundEscPressHandler);
-}
-
-const showMessage = (templateId) => {
+const showMessage = (templateId, originalEscHandler) => {
   const template = document.getElementById(templateId);
   const clone = template.content.cloneNode(true);
   document.body.appendChild(clone);
 
-  const messageElement = document.querySelector(`.${templateId}`);
-  const button = messageElement.querySelector('button');
+  const message = document.querySelector(`.${templateId}`);
+  const acceptButton = message.querySelector('button');
 
-  const boundClickOutsideHandler = (event) => handleClickOutside(event, messageElement);
-  const boundEscPressHandler = (event) => handleEscPress(event, messageElement);
+  const onOutsideClick = (evt) => {
+    if (!message.contains(evt.target.closest(`.${message.className}__inner`))) {
+      removeMessage();
+    }
+  };
 
-  button.addEventListener('click', () => removeMessage(messageElement, boundClickOutsideHandler, boundEscPressHandler));
-  document.addEventListener('click', boundClickOutsideHandler);
-  document.addEventListener('keydown', boundEscPressHandler);
+  const onEscPress = (evt) => {
+    if (isEscapeKey(evt)) {
+      removeMessage();
+    }
+  };
+
+  const onAcceptButtonClick = () => {
+    removeMessage();
+  };
+
+  function removeMessage () {
+    document.removeEventListener('click', onOutsideClick);
+    document.removeEventListener('keydown', onEscPress);
+    if (message) {
+      message.remove();
+    }
+    if (originalEscHandler) {
+      document.addEventListener('keydown', originalEscHandler);
+    }
+  }
+
+  acceptButton.addEventListener('click', onAcceptButtonClick);
+  document.addEventListener('click', onOutsideClick);
+  document.addEventListener('keydown', onEscPress);
+
+  if (originalEscHandler) {
+    document.removeEventListener('keydown', originalEscHandler);
+  }
 };
 
-const showSuccessMessage = () => {
-  showMessage('success');
+const showSuccessMessage = (originalEscHandler) => {
+  showMessage('success', originalEscHandler);
 };
 
-const showErrorMessage = () => {
-  showMessage('error');
+const showErrorMessage = (originalEscHandler) => {
+  showMessage('error', originalEscHandler);
 };
 
 export { showSuccessMessage, showErrorMessage };

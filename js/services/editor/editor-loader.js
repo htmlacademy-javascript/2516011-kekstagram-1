@@ -47,12 +47,6 @@ function closeEditor() {
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-const onCancelButtonLock = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-};
-
 const onCancelButtonClick = () => {
   closeEditor();
 };
@@ -71,17 +65,16 @@ const setOnSubmit = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-    const isValid = pristine.validate();
-    if (isValid) {
+    if (pristine.validate()) {
       blockSubmitButton();
 
       sendData(new FormData(form))
         .then(() => {
           closeEditor();
-          showSuccessMessage();
+          showSuccessMessage(onDocumentKeydown);
         })
         .catch(() => {
-          showErrorMessage();
+          showErrorMessage(onDocumentKeydown);
         })
         .finally(() => {
           unblockSubmitButton();
@@ -90,8 +83,20 @@ const setOnSubmit = () => {
   });
 };
 
+const onHashTagsInputKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+};
+
+const onCommentInputKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+};
+
 cancelButton.addEventListener('click', onCancelButtonClick);
-hashTagsInput.addEventListener('keydown', onCancelButtonLock);
-commentInput.addEventListener('keydown', onCancelButtonLock);
+hashTagsInput.addEventListener('keydown', onHashTagsInputKeydown);
+commentInput.addEventListener('keydown', onCommentInputKeydown);
 
 export { setOnSubmit, openEditor };

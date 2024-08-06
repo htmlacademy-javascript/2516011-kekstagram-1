@@ -8,14 +8,18 @@ import { addImageLoadListener } from './services/editor/editor-upload-image.js';
 
 const fileInput = document.getElementById('upload-file');
 
-getData()
-  .then((photos) => {
-    const debouncedRenderGallery = debounce(renderGallery);
-    setupFilters(photos, debouncedRenderGallery);
-    addImageLoadListener(fileInput, openEditor);
-  })
-  .catch((err) => {
-    showError(err.message);
-  });
+const initializeApplication = () => {
+  getData()
+    .then((photos) => {
+      const debouncedRenderGallery = debounce(renderGallery);
+      setupFilters(photos, debouncedRenderGallery);
+      addImageLoadListener(fileInput, openEditor);
+    })
+    .catch((err) => {
+      showError(err.message);
+    });
 
-setOnSubmit();
+  setOnSubmit();
+};
+
+initializeApplication();
