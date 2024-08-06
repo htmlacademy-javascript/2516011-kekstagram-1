@@ -4,12 +4,12 @@ const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const validateFileType = (file) => new Promise((resolve, reject) => {
   const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
+  const isValidType = FILE_TYPES.some((type) => fileName.endsWith(type));
 
-  if (matches) {
+  if (isValidType) {
     resolve(URL.createObjectURL(file));
   } else {
-    reject(new Error('Неподдерживаемый тип файла. Пожалуйста, выберите файл .jpg, .jpeg или .png.'));
+    reject('Неподдерживаемый тип файла. Пожалуйста, выберите файл .jpg, .jpeg или .png.');
   }
 });
 
@@ -22,8 +22,8 @@ const onFileInputChange = (evt, openEditor) => {
       .then((fileURL) => {
         openEditor(fileURL);
       })
-      .catch((error) => {
-        showError(error.message);
+      .catch((errorMessage) => {
+        showError(errorMessage);
         fileInput.value = '';
       });
   }

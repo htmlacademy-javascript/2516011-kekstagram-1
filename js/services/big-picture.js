@@ -63,6 +63,8 @@ const openBigPicture = (cardData) => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
+const onBigPictureCancelClick = () => closeBigPicture();
+
 function closeBigPicture () {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -72,6 +74,6 @@ function closeBigPicture () {
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-bigPictureCancel.addEventListener('click', closeBigPicture);
+bigPictureCancel.addEventListener('click', onBigPictureCancelClick);
 
 export { openBigPicture };

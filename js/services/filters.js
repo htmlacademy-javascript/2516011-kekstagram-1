@@ -10,23 +10,30 @@ const PhotoFilterSettings = {
 const imgFilters = document.querySelector('.img-filters');
 
 const filterPhotos = (photos, filterType) => {
+  const sortedPhotos = photos.slice();
   switch (filterType) {
     case PhotoFilterSettings.RANDOM:
-      return photos.slice().sort(sortRandomly).slice(0, PICTURES_RENDER_COUNT);
+      return sortedPhotos.sort(sortRandomly).slice(0, PICTURES_RENDER_COUNT);
     case PhotoFilterSettings.DISCUSSED:
-      return photos.slice().sort(sortByComments);
+      return sortedPhotos.sort(sortByComments);
     default:
-      return photos.slice();
+      return sortedPhotos;
   }
 };
 
 const setupFilters = (photos, cb) => {
-  Object.values(PhotoFilterSettings).forEach((filter) => {
-    const filterButton = document.getElementById(filter);
+  const filterButtons = Object.keys(PhotoFilterSettings).map((key) =>
+    document.getElementById(PhotoFilterSettings[key])
+  );
+
+  filterButtons.forEach((filterButton) => {
     filterButton.addEventListener('click', () => {
-      document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+      const activeButton = imgFilters.querySelector('.img-filters__button--active');
+      if (activeButton) {
+        activeButton.classList.remove('img-filters__button--active');
+      }
       filterButton.classList.add('img-filters__button--active');
-      cb(filterPhotos(photos, filter));
+      cb(filterPhotos(photos, filterButton.id));
     });
   });
 

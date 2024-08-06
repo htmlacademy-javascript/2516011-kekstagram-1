@@ -5,35 +5,39 @@ const showMessage = (templateId, originalEscHandler) => {
   const clone = template.content.cloneNode(true);
   document.body.appendChild(clone);
 
-  const messageElement = document.querySelector(`.${templateId}`);
-  const button = messageElement.querySelector('button');
+  const message = document.querySelector(`.${templateId}`);
+  const acceptButton = message.querySelector('button');
 
-  const handleClickOutside = (evt) => {
-    if (!messageElement.contains(evt.target.closest(`.${messageElement.className}__inner`))) {
-      removeMessage(messageElement, null);
+  const onOutsideClick = (evt) => {
+    if (!message.contains(evt.target.closest(`.${message.className}__inner`))) {
+      removeMessage();
     }
   };
 
-  const handleEscPress = (evt) => {
+  const onEscPress = (evt) => {
     if (isEscapeKey(evt)) {
-      removeMessage(messageElement, originalEscHandler);
+      removeMessage();
     }
+  };
+
+  const onAcceptButtonClick = () => {
+    removeMessage();
   };
 
   function removeMessage () {
-    document.removeEventListener('click', handleClickOutside);
-    document.removeEventListener('keydown', handleEscPress);
-    if (messageElement && messageElement.parentNode) {
-      messageElement.parentNode.removeChild(messageElement);
+    document.removeEventListener('click', onOutsideClick);
+    document.removeEventListener('keydown', onEscPress);
+    if (message) {
+      message.remove();
     }
     if (originalEscHandler) {
       document.addEventListener('keydown', originalEscHandler);
     }
   }
 
-  button.addEventListener('click', removeMessage);
-  document.addEventListener('click', handleClickOutside);
-  document.addEventListener('keydown', handleEscPress);
+  acceptButton.addEventListener('click', onAcceptButtonClick);
+  document.addEventListener('click', onOutsideClick);
+  document.addEventListener('keydown', onEscPress);
 
   if (originalEscHandler) {
     document.removeEventListener('keydown', originalEscHandler);

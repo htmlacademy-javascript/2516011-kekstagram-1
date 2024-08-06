@@ -11,6 +11,12 @@ const DEFAULT_SCALE = 100;
 let currentScale = DEFAULT_SCALE;
 
 const updateScale = (newScale) => {
+  if (newScale < MIN_SCALE) {
+    newScale = MIN_SCALE;
+  } else if (newScale > MAX_SCALE) {
+    newScale = MAX_SCALE;
+  }
+
   currentScale = newScale;
   imgUploadPreview.style.transform = `scale(${currentScale / 100})`;
   scaleControlValue.value = `${currentScale}%`;
@@ -30,7 +36,9 @@ const onBiggerControlClick = () => {
   }
 };
 
-scaleControlSmaller.addEventListener('click', onSmallerControlClick);
-scaleControlBigger.addEventListener('click', onBiggerControlClick);
+if (scaleControlSmaller && scaleControlBigger && scaleControlValue && imgUploadPreview) {
+  scaleControlSmaller.addEventListener('click', onSmallerControlClick);
+  scaleControlBigger.addEventListener('click', onBiggerControlClick);
+}
 
 export { resetScale };

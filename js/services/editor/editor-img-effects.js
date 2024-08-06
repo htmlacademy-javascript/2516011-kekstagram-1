@@ -5,7 +5,7 @@ const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const effectLevelContainer = document.querySelector('.img-upload__effect-level');
 
 const EFFECTS = {
-  'none': { class: '', filter: '', unit: '', min: 0, max: 100, step: 1 },
+  'none': { class: 'effects__preview--none', filter: '', unit: '', min: 0, max: 100, step: 1 },
   'chrome': { class: 'effects__preview--chrome', filter: 'grayscale', unit: '', min: 0, max: 1, step: 0.1 },
   'sepia': { class: 'effects__preview--sepia', filter: 'sepia', unit: '', min: 0, max: 1, step: 0.1 },
   'marvin': { class: 'effects__preview--marvin', filter: 'invert', unit: '%', min: 0, max: 100, step: 1 },
@@ -21,19 +21,16 @@ const updateSlider = (effect) => {
   if (effect === 'none') {
     effectLevelContainer.classList.add('hidden');
     imgUploadPreview.style.filter = '';
-    imgUploadPreview.className = 'effects__preview--none';
+    imgUploadPreview.className = EFFECTS[DEFAULT_EFFECT].class;
     effectLevelValue.value = '';
     return;
   }
   effectLevelContainer.classList.remove('hidden');
   const { min, max, step } = EFFECTS[effect];
   effectLevelSlider.noUiSlider.updateOptions({
-    range: {
-      min: min,
-      max: max,
-    },
+    range: { min, max },
     start: max,
-    step: step,
+    step
   });
 };
 
@@ -49,13 +46,10 @@ const applyEffect = (effect, value) => {
 };
 
 noUiSlider.create(effectLevelSlider, {
-  range: {
-    min: 0,
-    max: 100,
-  },
+  range: { min: 0, max: 100 },
   start: 100,
   step: 1,
-  connect: 'lower',
+  connect: 'lower'
 });
 
 const onEffectLevelUpdate = (values, handle) => {
@@ -66,7 +60,7 @@ const onEffectLevelUpdate = (values, handle) => {
 
 const onEffectChange = (evt) => {
   const effect = evt.target.value;
-  imgUploadPreview.className = `effects__preview--${effect}`;
+  imgUploadPreview.className = EFFECTS[effect].class;
   currentEffect = effect;
   updateSlider(effect);
 };

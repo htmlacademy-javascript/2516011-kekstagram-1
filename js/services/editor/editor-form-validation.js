@@ -2,9 +2,12 @@ const TAG_ERROR_TEXT = 'Неверный формат хэш-тегов или �
 const COMMENT_ERROR_TEXT = 'Комментарий не должен превышать 140 символов';
 const VALID_SYMBOLS = /^#[a-zA-Z0-9]{1,19}$/;
 
+const MAX_TAGS = 5;
+const MAX_COMMENT_LENGTH = 140;
+
 const form = document.querySelector('.img-upload__form');
-const hashTagsInput = document.querySelector('.text__hashtags');
-const commentInput = document.querySelector('.text__description');
+const hashTagsInput = form.querySelector('.text__hashtags');
+const commentInput = form.querySelector('.text__description');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -15,41 +18,25 @@ const pristine = new Pristine(form, {
   errorTextClass: 'text-help'
 });
 
+const validateTag = (tag) => VALID_SYMBOLS.test(tag);
+
+const hasUniqueTags = (tags) => new Set(tags).size === tags.length;
+
 const validateTags = (value) => {
   const tags = value
     .trim()
     .toLowerCase()
     .split(/\s+/)
-    .filter((tag) => tag.trim().length);
-  const tagSet = new Set();
+    .filter(Boolean);
 
-  for (const tag of tags) {
-    if (!VALID_SYMBOLS.test(tag)) {
-      return false;
-    }
-    if (tagSet.has(tag)) {
-      return false;
-    }
-    tagSet.add(tag);
-  }
-
-  if (tagSet.size > 5) {
-    return false;
-  }
-
-  return true;
+  return tags.length <= MAX_TAGS &&
+         tags.every(validateTag) &&
+         hasUniqueTags(tags);
 };
 
-pristine.addValidator(
-  hashTagsInput,
-  validateTags,
-  TAG_ERROR_TEXT
-);
+const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
 
-pristine.addValidator(
-  commentInput,
-  (value) => value.length <= 140,
-  COMMENT_ERROR_TEXT
-);
+pristine.addValidator(hashTagsInput, validateTags, TAG_ERROR_TEXT);
+pristine.addValidator(commentInput, validateComment, COMMENT_ERROR_TEXT);
 
 export { form, pristine };
